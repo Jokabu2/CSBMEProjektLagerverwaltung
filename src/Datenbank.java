@@ -12,7 +12,7 @@ public class Datenbank {
 	}
 
 	/*
-	 * Datebank-Verbindung wird hergestellt und als Rückgabeparamter zurückgegeben.
+	 * Datenbank-Verbindung wird hergestellt und als Rückgabeparameter zurückgegeben.
 	 */
 	public static void createDBConnection() {
 		
