@@ -71,7 +71,7 @@ public class Datenbank {
 
 	}
 	
-	public static void tabelleAusgeben () {
+	public void tabelleAusgeben () {
 		try {  		
     		Statement stmt = conn.createStatement();
     		ResultSet rs = stmt.executeQuery("Select * from lagerbestand");
