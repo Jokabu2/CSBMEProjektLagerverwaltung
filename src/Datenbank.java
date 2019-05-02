@@ -6,7 +6,6 @@ public class Datenbank {
 	// SQL Datum-Objekt erstellen.
 	java.sql.Date startDate = getStartDate();
 	Connection conn = createConnection();
-	DBConnection();
 	
 	
 	public Datenbank() {
@@ -16,7 +15,6 @@ public class Datenbank {
 	public void DBConnection1() {
 		try {
 			// mySQL Datenbank-Connection erstellen
-			String myUrl = getMyUrl();
 			String myDriver = getMyDriver();
 			Class.forName(myDriver);
 				
