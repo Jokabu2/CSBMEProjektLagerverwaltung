@@ -16,6 +16,7 @@ public class Frame extends JFrame implements ActionListener{
     JPanel panel;
 	
 	Frame(){
+		//Erzeugen des Fensters
 		this.setTitle("Lagerverwaltungssystem");
         this.setSize(400, 200);
         panel = new JPanel();
