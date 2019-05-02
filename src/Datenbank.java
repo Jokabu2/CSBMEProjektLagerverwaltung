@@ -5,18 +5,15 @@ import java.util.Calendar;
 public class Datenbank {
 	// SQL Datum-Objekt erstellen.
 	static java.sql.Date startDate = getStartDate();
+	static Connection conn = createConnection();
 	
-	public static void main(String[] args) {
+	public Datenbank() {
 		try {
 			// mySQL Datenbank-Connection erstellen
 			String myUrl = getMyUrl();
 			String myDriver = getMyDriver();
 			Class.forName(myDriver);
-			Connection conn = DriverManager.getConnection(getMyUrl(), "root", "");
-	
-			// INSERT-Befehl
-			String query = " insert into TABELLENNAMEN (SPALTENNAMEN)" + " values (?)";
-
+				
 		} catch (Exception e) {
 			System.err.println("In Klasse Datenbank ist ein Fehler aufgetreten!");
 			System.err.println(e.getMessage());
@@ -36,18 +33,64 @@ public class Datenbank {
 	    java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
 	    return startDate;
 	}
-
+	
+	private static Connection createConnection() {
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(getMyUrl(), "root", "");
+		} catch (SQLException e) {
+			System.err.println("Fehler im Connectionaufbau");
+			e.printStackTrace();
+		}
+		return conn;
+	}
+	
+	public static String getQuery() {
+		String query = " insert into TABELLENNAMEN (SPALTENNAMEN)" + " values (?)";
+		return query;
+	}
+	
 	public static void insert() {
 		// Vorbereiteter INSERT-Befehl wird verwendet
-		PreparedStatement preInsert = conn.prepareStatement(query);
-		preInsert.setString(1, "Barney");
-		preInsert.setString(2, "Rubble");
-		preInsert.setDate(3, startDate);
-		preInsert.setBoolean(4, false);
-		preInsert.setInt(5, 5000);
+		PreparedStatement preInsert;
+		try {
+			preInsert = conn.prepareStatement(getQuery());
+			preInsert.setString(1, "Barney");
+			preInsert.setString(2, "Rubble");
+			preInsert.setDate(3, startDate);
+			preInsert.setBoolean(4, false);
+			preInsert.setInt(5, 5000);
 
-		// Vorbereiteten Befehl ausführen
-		preInsert.execute();
+			// Vorbereiteten Befehl ausführen
+			preInsert.execute();
+			
+		} catch (SQLException e) {
+			// TODO Automatisch generierter Erfassungsblock
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static void tabelleAusgeben () {
+		try {  		
+    		Statement stmt = conn.createStatement();
+    		ResultSet rs = stmt.executeQuery("Select * from lagerbestand");
+    		
+    		String s = "";
+    		
+    		while(rs.next()) {
+    			
+    			s += rs.getInt(1)+" | "+rs.getString(2)+" | "+rs.getString(3)+" | "+rs.getString(4)+" | "+rs.getString(5)+" | "+rs.getString(6)+" | "+rs.getString(7)+"\n";        			        			
+    			
+    		}
+    		System.out.println(s);
+    		
+    		rs.close();
+    		stmt.close();
+    		
+    	} catch(Exception e) {
+    		System.err.println("Fehlermeldung in Methode tabelleAusgeben" + e);
+    	}
 	}
 }
 
