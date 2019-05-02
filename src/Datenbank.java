@@ -50,16 +50,16 @@ public class Datenbank {
 		return conn;
 	}
 	
-	public String getQuery() {
-		String query = " insert into TABELLENNAMEN (SPALTENNAMEN)" + " values (?)";
+	public String getInsertQuery() {
+		String query = "insert into bestand (inventarnummer, produkttyp, hersteller, modellnummer, beschreibung, preis, lieferant, einlagerungsdatum, auslagerungsdatum) VALUES (?,?,?,?,?,?,?,?,?)";
 		return query;
 	}
 	
-	public void insert() {
+	public void insert(String produkttyp, String hersteller, String modellnummer, String beschreibung, double preis, String lieferant, String einlagerungsdatum, String auslagerungsdatum) {
 		// Vorbereiteter INSERT-Befehl wird verwendet
 		PreparedStatement preInsert;
 		try {
-			preInsert = conn.prepareStatement(getQuery());
+			preInsert = conn.prepareStatement(getInsertQuery());
 			preInsert.setString(1, "Barney");
 			preInsert.setString(2, "Rubble");
 			preInsert.setDate(3, startDate);
