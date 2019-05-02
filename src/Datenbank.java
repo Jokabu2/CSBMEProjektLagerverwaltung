@@ -4,8 +4,8 @@ import java.util.Calendar;
 
 public class Datenbank {
 	// SQL Datum-Objekt erstellen.
-	static java.sql.Date startDate = getStartDate();
-	static Connection conn = createConnection();
+	java.sql.Date startDate = getStartDate();
+	Connection conn = createConnection();
 	
 	public Datenbank() {
 		try {
@@ -20,21 +20,21 @@ public class Datenbank {
 		}
 	}
 
-	public static String getMyUrl() {
+	public String getMyUrl() {
 		return "jdbc:mysql://localhost/warenlager?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 	}
 
-	public static String getMyDriver() {
+	public String getMyDriver() {
 		return "org.gjt.mm.mysql.Driver";
 	}
 
-	private static Date getStartDate() {
+	public Date getStartDate() {
 		Calendar calendar = Calendar.getInstance();
 	    java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
 	    return startDate;
 	}
 	
-	private static Connection createConnection() {
+	public Connection createConnection() {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(getMyUrl(), "root", "");
@@ -45,12 +45,12 @@ public class Datenbank {
 		return conn;
 	}
 	
-	public static String getQuery() {
+	public String getQuery() {
 		String query = " insert into TABELLENNAMEN (SPALTENNAMEN)" + " values (?)";
 		return query;
 	}
 	
-	public static void insert() {
+	public void insert() {
 		// Vorbereiteter INSERT-Befehl wird verwendet
 		PreparedStatement preInsert;
 		try {
