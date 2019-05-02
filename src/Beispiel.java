@@ -54,15 +54,9 @@ public class BeispielListener extends JFrame implements ActionListener
         if(ae.getSource() == this.button1){
         	try {
         		Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        		
-        		Connection con = DriverManager.getConnection(url,"root","");
-        		
-        		
-        		
+        		Connection con = DriverManager.getConnection(url,"root","");		
         		Statement stmt = con.createStatement();
-        		
         		stmt.execute("INSERT INTO lagerbestand (id,artikelname,anzahl)" + "VALUES (23,'Gucci-Tasche',5)");        		
-        		
         		stmt.close();
         		con.close();
         		
