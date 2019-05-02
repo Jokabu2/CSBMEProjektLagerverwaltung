@@ -17,7 +17,7 @@ public class BeispielListener extends JFrame implements ActionListener
     JButton button3;
     JLabel label;
     JPanel panel;
-    String url = "jdbc:mysql://localhost/warenlager?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+
  
     public BeispielListener(){
         this.setTitle("ActionListener Beispiel");
