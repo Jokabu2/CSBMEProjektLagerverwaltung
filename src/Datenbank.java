@@ -6,8 +6,14 @@ public class Datenbank {
 	// SQL Datum-Objekt erstellen.
 	java.sql.Date startDate = getStartDate();
 	Connection conn = createConnection();
+	DBConnection();
+	
 	
 	public Datenbank() {
+		
+	}
+	
+	public void DBConnection1() {
 		try {
 			// mySQL Datenbank-Connection erstellen
 			String myUrl = getMyUrl();
@@ -19,6 +25,7 @@ public class Datenbank {
 			System.err.println(e.getMessage());
 		}
 	}
+
 
 	public String getMyUrl() {
 		return "jdbc:mysql://localhost/warenlager?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
