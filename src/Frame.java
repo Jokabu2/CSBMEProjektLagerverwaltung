@@ -1,12 +1,7 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
-import javax.swing.*;
+public class Frame {
 
+<<<<<<< HEAD
 public class Frame extends JFrame implements ActionListener{
 
 	JButton button1;
@@ -62,6 +57,15 @@ public class Frame extends JFrame implements ActionListener{
             label.setText("Button 3 wurde betätigt");
         }
 		
+=======
+	public void setVisible(boolean b) {
+		
+		
+		
+		
+		
+	public static void
+>>>>>>> branch 'master' of https://github.com/Jokabu2/CSBMEProjektLagerverwaltung.git
 	}
 
 }
