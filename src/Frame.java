@@ -101,6 +101,7 @@ class DBConnection{
 	static Connection connection;
 
 	public static void main (String [] args) {
+		//Eingabeparamter: host, Datenbank, Benutzer, Passwort
 		boolean a = connectToMysql("localhost:3306",  "test",  "root",  "Kunxholli123");
 		System.out.println(a);
 	}
