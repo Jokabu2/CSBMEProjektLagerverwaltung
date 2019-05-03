@@ -7,15 +7,12 @@ public class Datenbank {
 	java.sql.Date startDate = getStartDate();
 	Connection conn = createConnection();
 
-	public Datenbank() {
-
-	}
-
-	public void DBConnection1() {
+	public void DBConnection() {
 		try {
 			// mySQL Datenbank-Connection erstellen
 			String myDriver = getMyDriver();
 			Class.forName(myDriver);
+			Connection conn = createConnection();
 
 		} catch (Exception e) {
 			System.err.println("In Klasse Datenbank ist ein Fehler aufgetreten!");
@@ -24,11 +21,11 @@ public class Datenbank {
 	}
 
 	public String getMyUrl() {
-		return "jdbc:mysql://localhost/warenlager?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		return "jdbc:mysql://localhost/lagerverwaltung?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 	}
 
 	public String getMyDriver() {
-		return "org.gjt.mm.mysql.Driver";
+		return "com.mysql.cj.jdbc.Driver";
 	}
 
 	public Date getStartDate() {
