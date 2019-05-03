@@ -1,16 +1,7 @@
 //Klasse DBConnection
 import java.sql.*;
 import java.util.Calendar;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Vector;
-import java.sql.Date;
-
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -98,26 +89,59 @@ public class Frame extends JFrame implements ActionListener {
 
 class DBConnection{
 
-	static Connection connection;
+	static Connection con;
+	static String myDriver = "com.mysql.cj.jdbc.Driver";
 
-	public static void main (String [] args) {
+	public DBConnection() {
 		//Eingabeparamter: host, Datenbank, Benutzer, Passwort
-		boolean a = connectToMysql("localhost:3306",  "test",  "root",  "Kunxholli123");
-		System.out.println(a);
+		connectToMysql("localhost:3306",  "test",  "root",  "Kunxholli123");
 	}
 	
-	public static boolean connectToMysql(String host, String database, String user, String passwd) {
+	public static void connectToMysql(String host, String database, String user, String passwd) {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			Class.forName(myDriver).newInstance();
 			String connectionCommand = "jdbc:mysql://"+host+"/"+database+"?user="+user+"&password="+passwd +"&serverTimezone=UTC";
 				 
-			connection = DriverManager.getConnection(connectionCommand);
-			return true;
+			con = DriverManager.getConnection(connectionCommand);
+			System.out.println("connectToMysql Connection wurde erstellt");
 
 		} catch (Exception ex) {
-			System.out.println("false");
 			System.err.println(ex);
-			return false;
+			System.out.println("Fehler in der Methode: connectToMysql");
+		}
+	}
+	
+	public String getInsertQuery() {
+		String query = "insert into bestand (inventarnummer, produkttyp, hersteller, modellnummer, beschreibung, preis, lieferant, einlagerungsdatum, auslagerungsdatum) VALUES (?,?,?,?,?,?,?,?,?)";
+		return query;
+	}
+
+	public void insert(String invenarnummer, String produkttyp, String hersteller, String modellnummer,
+			String beschreibung, double preis, String lieferant, String einlagerungsdatum, String auslagerungsdatum) {
+
+		// Vorbereiteter INSERT-Befehl wird verwendet
+		PreparedStatement preInsert;
+		try {
+
+			// Eventuell VARCHAR Größen beachten
+
+			preInsert = con.prepareStatement(getInsertQuery());
+			preInsert.setString(1, invenarnummer);
+			preInsert.setString(2, produkttyp);
+			preInsert.setString(3, hersteller);
+			preInsert.setString(4, modellnummer);
+			preInsert.setString(5, beschreibung);
+			preInsert.setDouble(6, preis);
+			preInsert.setString(7, lieferant);
+			preInsert.setString(8, einlagerungsdatum);
+			preInsert.setString(9, auslagerungsdatum);
+
+			// Vorbereiteten Befehl ausführen
+			preInsert.execute();
+
+		} catch (SQLException e) {
+			// TODO Automatisch generierter Erfassungsblock
+			e.printStackTrace();
 		}
 	}
 }
