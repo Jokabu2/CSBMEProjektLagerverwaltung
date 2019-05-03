@@ -73,7 +73,7 @@ public class Frame extends JFrame implements ActionListener {
 		// der Buttons ist, wird der Text des JLabels entsprechend geändert
 
 		if (ae.getSource() == this.button1) {
-			label.setText("Button 1 wurde betätigt");
+			d1.insert(invenarnummer, produkttyp, hersteller, modellnummer, beschreibung, preis, lieferant, einlagerungsdatum, auslagerungsdatum);
 		} else if (ae.getSource() == this.button2) {
 			
 			d1.tabelleAusgeben();
