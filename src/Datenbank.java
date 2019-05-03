@@ -48,10 +48,12 @@ public class Datenbank {
 	/**
 	 * 
 	 */
+	/*
 	public String getInsertQuery() {
 		String query = "insert into bestand (inventarnummer, produkttyp, hersteller, modellnummer, beschreibung, preis, lieferant, einlagerungsdatum, auslagerungsdatum) VALUES (?,?,?,?,?,?,?,?,?)";
 		return query;
 	}
+	*/
 
 	public void insert(String invenarnummer, String produkttyp, String hersteller, String modellnummer,
 			String beschreibung, double preis, String lieferant, String einlagerungsdatum, String auslagerungsdatum) {
@@ -59,9 +61,12 @@ public class Datenbank {
 		// Vorbereiteter INSERT-Befehl wird verwendet
 		PreparedStatement preInsert;
 		try {
-
-			// Eventuell VARCHAR Größen beachten
-
+			Statement stmt = conn.createStatement();
+    		stmt.execute("INSERT INTO lagerbestand (inventarnummer, produkttyp, hersteller, modellnummer, beschreibung, preis, lieferant, einlagerungsdatum, auslagerungsdatum)" + "VALUES ('IT123456','Drucker','HP','MPD233J', 'Sehr schwer','123.45','Amazon','2019-05-05','2019-05-05')");   
+			
+    		/*
+    		// Eventuell VARCHAR Größen beachten
+			stmt.execute("INSERT INTO lagerbestand (id,artikelname,anzahl)" + "VALUES (23,'Gucci-Tasche',5)");  
 			preInsert = conn.prepareStatement(getInsertQuery());
 			preInsert.setString(1, invenarnummer);
 			preInsert.setString(2, produkttyp);
@@ -72,6 +77,7 @@ public class Datenbank {
 			preInsert.setString(7, lieferant);
 			preInsert.setString(8, einlagerungsdatum);
 			preInsert.setString(9, auslagerungsdatum);
+			*/
 
 			// Vorbereiteten Befehl ausführen
 			preInsert.execute();
