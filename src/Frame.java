@@ -10,7 +10,6 @@ import javax.swing.*;
 
 public class Frame extends JFrame implements ActionListener {
 	
-	static Datenbank d1 = new Datenbank();
 
 	/**
 	 * 
