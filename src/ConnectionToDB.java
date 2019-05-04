@@ -8,21 +8,28 @@ import java.sql.Statement;
 public class ConnectionToDB {
 
 	Connection con;
-	String myDriver = "com.mysql.cj.jdbc.Driver";
 
-	public ConnectionToDB() {
-		// Eingabeparamter: host, Datenbank, Benutzer, Passwort
-		connectToMysql("localhost:3306", "lagerverwaltung", "root", "Kunxholli123");
-	}
+	// DB-Connection Infos
+	String host = "localhost:3306";
+	String database = "lagerverwaltung";
+	String user = "root";
+	String passwd = "Kunxholli123";
 
+	/**
+	 * @param host
+	 * @param database
+	 * @param user
+	 * @param passwd
+	 * 
+	 *                 Datenbank-Connection wird aufgebaut. Bevor man mit einem
+	 *                 SQL-Statement an der Datenbank arbeiten kann.
+	 */
 	public void connectToMysql(String host, String database, String user, String passwd) {
 		try {
-			Class.forName(myDriver).newInstance();
-			String connectionCommand = "jdbc:mysql://" + host + "/" + database + "?user=" + user + "&password=" + passwd
-					+ "&serverTimezone=UTC";
-
-			con = DriverManager.getConnection(connectionCommand);
-			System.out.println("##########connectToMysql Connection wurde erstellt##########");
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			con = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database + "?user=" + user + "&password="
+					+ passwd + "&serverTimezone=UTC");
+			System.out.println("########## connectToMysql Connection wurde erstellt ##########"); //Statusausgabe
 
 		} catch (Exception e) {
 			System.err.println(e);
@@ -30,9 +37,22 @@ public class ConnectionToDB {
 		}
 	}
 
+	/**
+	 * @param inventarnummer
+	 * @param produkttyp
+	 * @param hersteller
+	 * @param modellnummer
+	 * @param beschreibung
+	 * @param preis
+	 * @param lieferant
+	 * @param einlagerungsdatum
+	 * @param auslagerungsdatum
+	 * @return Mitteilung ob der Datensatz erfolgreich hinzugefügt wurde.
+	 */
 	public String insert(String inventarnummer, String produkttyp, String hersteller, String modellnummer,
 			String beschreibung, String preis, String lieferant, String einlagerungsdatum, String auslagerungsdatum) {
 		try {
+			connectToMysql(host, database, user, passwd);
 			Statement stmt = con.createStatement();
 			stmt.execute(
 					"INSERT INTO bestand (inventarnummer, produkttyp, hersteller, modellnummer, beschreibung, preis, lieferant, einlagerungsdatum, auslagerungsdatum)"
@@ -48,6 +68,7 @@ public class ConnectionToDB {
 																			// Inventarnummer doppelt verwendet werden
 																			// will. Inventarnummer ist in der DB
 																			// unique.
+				
 				return "Fehler! - Die Inventarnummer ist bereits vergeben: +" + inventarnummer;
 			} else if (e instanceof com.mysql.cj.jdbc.exceptions.MysqlDataTruncation) { // Abfangen von zu langen
 																						// Eingaben.
