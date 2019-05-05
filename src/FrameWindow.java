@@ -31,29 +31,13 @@ import javax.swing.DefaultComboBoxModel;
 
 public class FrameWindow {
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField textFieldInventarnummer;
 	private JTextField textFieldEinlagerungsdatum;
 	private JTextField textFieldModellNr;
 	private JTextField textFieldPreis;
 	private JTextField textFieldAuslDatum;
 	private JTextField text;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrameWindow window = new FrameWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -71,7 +55,7 @@ public class FrameWindow {
 		
 		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1280, 720);
+		frame.setBounds(100, 100, 992, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -124,11 +108,11 @@ public class FrameWindow {
 					JComboBox cb = (JComboBox)ae.getSource();
 					String msg = (String)cb.getSelectedItem();
 					switch (msg) {
-						case "Lager 1": lblBitteLagerAuswhlen.setText("1 ausgewählt");
+						case "Lager 1": lblBitteLagerAuswhlen.setText("Lager 1 ausgewählt");
 						break;
-						case "Lager 2": lblBitteLagerAuswhlen.setText("2 ausgewählt");
+						case "Lager 2": lblBitteLagerAuswhlen.setText("Lager 2 ausgewählt");
 						break;
-						case "Lager 3": lblBitteLagerAuswhlen.setText("3 ausgewählt");
+						case "Lager 3": lblBitteLagerAuswhlen.setText("Lager 3 ausgewählt");
 						break;
 						default: lblBitteLagerAuswhlen.setText("Kein Lager ausgewählt");
 					}
