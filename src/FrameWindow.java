@@ -61,8 +61,6 @@ public class FrameWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		String messageStrings[] = { "Lager 1", "Lager 2", "Lager 3" };
-		String mySQLBefehle[] = { "SELECT", "INSERT INTO", "UPDATE", "DELETE" };
 
 		frame = new JFrame();
 		frame.getContentPane().setForeground(Color.BLACK);
@@ -174,7 +172,7 @@ public class FrameWindow {
 
 		JSeparator separator = new JSeparator();
 
-		JComboBox comboBoxLager = new JComboBox(messageStrings);
+		JComboBox comboBoxLager = new JComboBox();
 		comboBoxLager.setName("");
 		comboBoxLager.setMaximumRowCount(10);
 		comboBoxLager.setToolTipText("");
@@ -203,7 +201,7 @@ public class FrameWindow {
 			}
 		});
 		
-		JComboBox comboBoxAktionen = new JComboBox(mySQLBefehle);
+		JComboBox comboBoxAktionen = new JComboBox();
 		comboBoxAktionen.setModel(
 				new DefaultComboBoxModel(new String[] { "Hinzuf\u00FCgen", "Suchen", "\u00C4ndern", "L\u00F6schen" }));
 		comboBoxAktionen.setSelectedIndex(-1);
