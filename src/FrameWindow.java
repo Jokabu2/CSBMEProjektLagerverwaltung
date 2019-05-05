@@ -28,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 public class FrameWindow {
 
@@ -37,7 +39,8 @@ public class FrameWindow {
 	private JTextField textFieldModellNr;
 	private JTextField textFieldPreis;
 	private JTextField textFieldAuslDatum;
-	private JTextField text;
+	private JTextField textFieldBeschreibung;
+	private JTable table;
 
 	/**
 	 * Create the application.
@@ -100,7 +103,9 @@ public class FrameWindow {
 
 		
 		JComboBox comboBoxLager = new JComboBox(messageStrings);
+		comboBoxLager.setMaximumRowCount(10);
 		comboBoxLager.setToolTipText("");
+		comboBoxLager.setModel(new DefaultComboBoxModel(new String[] {"Lager 1 - Marketing", "Lager 2 - EDV", "Lager 3 - Fotostudio", "Lager 4 - Messe", "Lager 5 - Produktion", "Lager 6 - K\u00FCche"}));
 		comboBoxLager.setSelectedIndex(-1);
 		comboBoxLager.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -121,7 +126,6 @@ public class FrameWindow {
 		});
 		
 		textFieldInventarnummer = new JTextField();
-		textFieldInventarnummer.setText("<Bitte eingeben>");
 		textFieldInventarnummer.setToolTipText("");
 		textFieldInventarnummer.setColumns(10);
 		
@@ -134,15 +138,12 @@ public class FrameWindow {
 		JLabel lblModellnummer = new JLabel("Modellnummer");
 		
 		textFieldEinlagerungsdatum = new JTextField();
-		textFieldEinlagerungsdatum.setText("<Bitte eingeben>");
 		textFieldEinlagerungsdatum.setColumns(10);
 		
 		textFieldModellNr = new JTextField();
-		textFieldModellNr.setText("<Bitte eingeben>");
 		textFieldModellNr.setColumns(10);
 		
 		textFieldPreis = new JTextField();
-		textFieldPreis.setText("<Bitte eingeben>");
 		textFieldPreis.setColumns(10);
 		
 		JLabel lblLieferant = new JLabel("Lieferant");
@@ -150,7 +151,6 @@ public class FrameWindow {
 		JLabel lblPreis = new JLabel("Preis");
 		
 		textFieldAuslDatum = new JTextField();
-		textFieldAuslDatum.setText("<Bitte eingeben>");
 		textFieldAuslDatum.setColumns(10);
 		
 		JLabel lblEinlagerungsdatum = new JLabel("Einlagerungsdatum");
@@ -159,9 +159,8 @@ public class FrameWindow {
 		
 		JLabel lblBeschreibung = new JLabel("Beschreibung");
 		
-		text = new JTextField();
-		text.setText("<Bitte eingeben>");
-		text.setColumns(10);
+		textFieldBeschreibung = new JTextField();
+		textFieldBeschreibung.setColumns(10);
 		
 		JComboBox comboBoxLieferant = new JComboBox();
 		comboBoxLieferant.setModel(new DefaultComboBoxModel(new String[] {"Amazon", "Mindactory", "Reichelt"}));
@@ -178,6 +177,13 @@ public class FrameWindow {
 		JButton btnEingabenVerwerfen = new JButton("Eingaben verwerfen");
 		
 		JButton btnAusfhren = new JButton("Ausf\u00FChren");
+		btnAusfhren.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Button: Ausführen");
+			}
+		});
+		
+		JScrollPane scrollPane = new JScrollPane();
 		
 
 		
@@ -195,95 +201,102 @@ public class FrameWindow {
 							.addComponent(btnAusfhren))
 						.addComponent(lblBeschreibung)
 						.addComponent(lblAktion)
+						.addComponent(textFieldBeschreibung)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(comboBoxAktionen, 0, 0, Short.MAX_VALUE)
-								.addComponent(comboBoxLager, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGap(18)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblBitteLagerAuswhlen)
-								.addComponent(lblAktionAuswhlen)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(comboBoxHersteller, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(textFieldInventarnummer)
-								.addComponent(lblHersteller)
-								.addComponent(lblInventarnummer)
-								.addComponent(lblProdukttyp)
-								.addComponent(textFieldEinlagerungsdatum)
-								.addComponent(lblEinlagerungsdatum)
-								.addComponent(comboBoxProdTyp, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGap(39)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(lblAuslagerungsdatum)
-								.addComponent(textFieldAuslDatum)
-								.addComponent(lblPreis)
-								.addComponent(lblLieferant)
-								.addComponent(lblModellnummer)
-								.addComponent(textFieldPreis)
-								.addComponent(textFieldModellNr)
-								.addComponent(comboBoxLieferant, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-						.addComponent(text))
-					.addContainerGap(940, Short.MAX_VALUE))
+								.addComponent(comboBoxAktionen, 0, 122, Short.MAX_VALUE)
+								.addComponent(comboBoxLager, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(comboBoxHersteller, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(textFieldInventarnummer)
+									.addComponent(lblHersteller)
+									.addComponent(lblInventarnummer)
+									.addComponent(lblProdukttyp)
+									.addComponent(textFieldEinlagerungsdatum)
+									.addComponent(lblEinlagerungsdatum)
+									.addComponent(comboBoxProdTyp, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+							.addGap(38)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(lblAuslagerungsdatum)
+									.addComponent(textFieldAuslDatum)
+									.addComponent(lblPreis)
+									.addComponent(lblLieferant)
+									.addComponent(lblModellnummer)
+									.addComponent(textFieldPreis)
+									.addComponent(textFieldModellNr)
+									.addComponent(comboBoxLieferant, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+									.addComponent(lblBitteLagerAuswhlen)
+									.addComponent(lblAktionAuswhlen)))))
+					.addGap(25)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+					.addGap(26))
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(47)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+					.addGap(43)
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(comboBoxLager, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblBitteLagerAuswhlen))
-					.addGap(18)
-					.addComponent(lblAktion)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(comboBoxAktionen, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblAktionAuswhlen))
-					.addGap(24)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblInventarnummer)
-						.addComponent(lblModellnummer))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldInventarnummer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textFieldModellNr, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblProdukttyp)
-						.addComponent(lblLieferant))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(comboBoxLieferant, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBoxProdTyp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblHersteller)
-						.addComponent(lblPreis))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldPreis, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBoxHersteller, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblEinlagerungsdatum)
-						.addComponent(lblAuslagerungsdatum))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldEinlagerungsdatum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textFieldAuslDatum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblBeschreibung)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(text, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnEingabenVerwerfen)
-						.addComponent(btnAusfhren))
-					.addContainerGap(172, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(scrollPane, Alignment.LEADING)
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(comboBoxLager, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblBitteLagerAuswhlen))
+							.addGap(18)
+							.addComponent(lblAktion)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(comboBoxAktionen, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblAktionAuswhlen))
+							.addGap(24)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblInventarnummer)
+								.addComponent(lblModellnummer))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textFieldInventarnummer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldModellNr, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblProdukttyp)
+								.addComponent(lblLieferant))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(comboBoxLieferant, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(comboBoxProdTyp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblHersteller)
+								.addComponent(lblPreis))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textFieldPreis, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(comboBoxHersteller, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblEinlagerungsdatum)
+								.addComponent(lblAuslagerungsdatum))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textFieldEinlagerungsdatum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldAuslDatum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblBeschreibung)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textFieldBeschreibung, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnEingabenVerwerfen)
+								.addComponent(btnAusfhren))))
+					.addContainerGap(39, Short.MAX_VALUE))
 		);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
 		
 
 		
