@@ -39,32 +39,48 @@ import javax.swing.JTextArea;
 public class FrameWindow {
 
 	JFrame frame;
-	private JTextField textFieldInventarnummer;
-	private JTextField textFieldEinlagerungsdatum;
-	private JTextField textFieldModellNr;
-	private JTextField textFieldPreis;
-	private JTextField textFieldVerleihdatum;
+
 	private JTable table;
-	private JComboBox comboBoxLieferant;
+
+	// Textfelder/Auswahlfelder der Eingabefelder
+	private JTextField textFieldInventarnummer;
+	private JTextField textFieldModellNr;
 	private JComboBox comboBoxProdTyp;
+	private JComboBox comboBoxLieferant;
 	private JComboBox comboBoxHersteller;
+	private JTextField textFieldPreis;
+	private JTextField textFieldEinlagerungsdatum;
+	private JTextField textFieldVerleihdatum;
 	private JTextArea textFieldBeschreibung;
 
+	// Labels der Eingabefelder
+	private JLabel lblInventarnummer;
+	private JLabel lblModellnummer;
+	private JLabel lblProdukttyp;
+	private JLabel lblLieferant;
+	private JLabel lblHersteller;
+	private JLabel lblPreis;
+	private JLabel lblEinlagerungsdatum;
+	private JLabel lblVerleihdatum;
+	private JLabel lblBeschreibung;
+
+	private JScrollPane scrollPaneBeschreibung;
+
 	/**
-	 * Create the application.
+	 * Applikation wird erzeugt.
 	 */
 	public FrameWindow() {
 		initialize();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Frame-Inhalte werden initialisiert.
 	 */
 	private void initialize() {
 
 		frame = new JFrame();
 		frame.getContentPane().setForeground(Color.BLACK);
-		frame.setBounds(100, 100, 1000, 585);
+		frame.setBounds(100, 100, 1000, 595);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -94,16 +110,16 @@ public class FrameWindow {
 		textFieldInventarnummer.setToolTipText("");
 		textFieldInventarnummer.setColumns(10);
 
-		JLabel lblInventarnummer = new JLabel("Inventarnummer");
+		lblInventarnummer = new JLabel("Inventarnummer");
 		lblInventarnummer.setForeground(Color.BLACK);
 
-		JLabel lblProdukttyp = new JLabel("Produkttyp");
+		lblProdukttyp = new JLabel("Produkttyp");
 		lblProdukttyp.setForeground(Color.BLACK);
 
-		JLabel lblHersteller = new JLabel("Hersteller");
+		lblHersteller = new JLabel("Hersteller");
 		lblHersteller.setForeground(Color.BLACK);
 
-		JLabel lblModellnummer = new JLabel("Modellnummer");
+		lblModellnummer = new JLabel("Modellnummer");
 		lblModellnummer.setForeground(Color.BLACK);
 
 		textFieldEinlagerungsdatum = new JTextField();
@@ -115,22 +131,22 @@ public class FrameWindow {
 		textFieldPreis = new JTextField();
 		textFieldPreis.setColumns(10);
 
-		JLabel lblLieferant = new JLabel("Lieferant");
+		lblLieferant = new JLabel("Lieferant");
 		lblLieferant.setForeground(Color.BLACK);
 
-		JLabel lblPreis = new JLabel("Preis");
+		lblPreis = new JLabel("Preis");
 		lblPreis.setForeground(Color.BLACK);
 
 		textFieldVerleihdatum = new JTextField();
 		textFieldVerleihdatum.setColumns(10);
 
-		JLabel lblEinlagerungsdatum = new JLabel("Einlagerungsdatum");
+		lblEinlagerungsdatum = new JLabel("Einlagerungsdatum");
 		lblEinlagerungsdatum.setForeground(Color.BLACK);
 
-		JLabel lblVerleihdatum = new JLabel("Verleihdatum");
+		lblVerleihdatum = new JLabel("Verleihdatum");
 		lblVerleihdatum.setForeground(Color.BLACK);
 
-		JLabel lblBeschreibung = new JLabel("Beschreibung");
+		lblBeschreibung = new JLabel("Beschreibung");
 		lblBeschreibung.setForeground(Color.BLACK);
 
 		comboBoxLieferant = new JComboBox();
@@ -152,6 +168,7 @@ public class FrameWindow {
 				deleteEingaben();
 			}
 		});
+
 		btnEingabenVerwerfen.setAutoscrolls(true);
 
 		JButton btnAusfhren = new JButton("Ausf\u00FChren");
@@ -164,10 +181,10 @@ public class FrameWindow {
 			}
 		});
 
-		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPaneBeschreibung = new JScrollPane();
 		textFieldBeschreibung = new JTextArea();
-		scrollPane_1.setViewportView(textFieldBeschreibung);
-		
+		scrollPaneBeschreibung.setViewportView(textFieldBeschreibung);
+
 		JScrollPane scrollPane = new JScrollPane();
 
 		JSeparator separator = new JSeparator();
@@ -195,15 +212,15 @@ public class FrameWindow {
 						lblBitteLagerAuswhlen.setVisible(false);
 						break;
 					default:
-						
+
 					}
 				}
 			}
 		});
-		
+
 		JComboBox comboBoxAktionen = new JComboBox();
-		comboBoxAktionen.setModel(
-				new DefaultComboBoxModel(new String[] { "Hinzuf\u00FCgen", "Suchen", "\u00C4ndern", "L\u00F6schen" }));
+		comboBoxAktionen.setModel(new DefaultComboBoxModel(
+				new String[] { "Hinzuf\u00FCgen", "Suchen", "\u00C4ndern", "Verleihen", "L\u00F6schen" }));
 		comboBoxAktionen.setSelectedIndex(-1);
 		comboBoxAktionen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -211,11 +228,15 @@ public class FrameWindow {
 					JComboBox cb = (JComboBox) ae.getSource();
 					String msg = (String) cb.getSelectedItem();
 
+					setAllVisibleTrue();
+
 					switch (msg) {
 					case "Hinzufügen":
 						lblAktionAuswhlen.setVisible(false);
-						textFieldEinlagerungsdatum.setEnabled(false);
-						textFieldVerleihdatum.setEnabled(false);
+						lblEinlagerungsdatum.setVisible(false);
+						textFieldEinlagerungsdatum.setVisible(false);
+						lblVerleihdatum.setVisible(false);
+						textFieldVerleihdatum.setVisible(false);
 						break;
 					case "Suchen":
 						lblAktionAuswhlen.setVisible(false);
@@ -223,133 +244,134 @@ public class FrameWindow {
 					case "Ändern":
 						lblAktionAuswhlen.setVisible(false);
 						break;
-					case "Löschen":
-
+					case "Verleihen":
+						setAllVisibleFalse();
+						lblInventarnummer.setVisible(true);
+						textFieldInventarnummer.setVisible(true);
 						break;
-					default:
-						
+					case "Löschen":
+						setAllVisibleFalse();
+						lblInventarnummer.setVisible(true);
+						textFieldInventarnummer.setVisible(true);
+						break;
 					}
 				}
 			}
 		});
-		
-
 
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(51)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-									.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(btnEingabenVerwerfen)
-										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(btnAusfhren))
-									.addComponent(lblBeschreibung)
-									.addGroup(groupLayout.createSequentialGroup()
-										.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-											.addComponent(comboBoxLager, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-											.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-											.addComponent(comboBoxHersteller, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-											.addComponent(textFieldInventarnummer, Alignment.LEADING)
-											.addComponent(lblHersteller, Alignment.LEADING)
-											.addComponent(lblInventarnummer, Alignment.LEADING)
-											.addComponent(lblProdukttyp, Alignment.LEADING)
-											.addComponent(textFieldEinlagerungsdatum, Alignment.LEADING)
-											.addComponent(lblEinlagerungsdatum, Alignment.LEADING)
-											.addComponent(comboBoxProdTyp, Alignment.LEADING, 0, 144, Short.MAX_VALUE)
-											.addComponent(comboBoxAktionen, 0, 122, Short.MAX_VALUE))
-										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-											.addGroup(groupLayout.createSequentialGroup()
-												.addGap(38)
-												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-													.addComponent(lblVerleihdatum)
-													.addComponent(textFieldVerleihdatum)
-													.addComponent(lblPreis)
-													.addComponent(lblLieferant)
-													.addComponent(textFieldPreis)
-													.addComponent(textFieldModellNr)
-													.addComponent(comboBoxLieferant, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
-													.addComponent(lblModellnummer)))
-											.addGroup(groupLayout.createSequentialGroup()
-												.addPreferredGap(ComponentPlacement.UNRELATED)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(51)
+						.addGroup(groupLayout
+								.createParallelGroup(Alignment.LEADING, false).addComponent(separator)
+								.addGroup(groupLayout
+										.createParallelGroup(Alignment.LEADING, false)
+										.addGroup(groupLayout.createSequentialGroup().addComponent(btnEingabenVerwerfen)
+												.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
+														Short.MAX_VALUE)
+												.addComponent(btnAusfhren))
+										.addComponent(lblBeschreibung)
+										.addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout
+												.createParallelGroup(Alignment.TRAILING)
+												.addComponent(comboBoxLager, Alignment.LEADING, 0,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(comboBoxHersteller, Alignment.LEADING, 0,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(textFieldInventarnummer, Alignment.LEADING)
+												.addComponent(lblHersteller, Alignment.LEADING)
+												.addComponent(lblInventarnummer, Alignment.LEADING)
+												.addComponent(lblProdukttyp, Alignment.LEADING)
+												.addComponent(textFieldEinlagerungsdatum, Alignment.LEADING)
+												.addComponent(lblEinlagerungsdatum, Alignment.LEADING)
+												.addComponent(comboBoxProdTyp, Alignment.LEADING, 0, 144,
+														Short.MAX_VALUE)
+												.addComponent(comboBoxAktionen, 0, 122, Short.MAX_VALUE))
 												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-													.addComponent(lblAktionAuswhlen)
-													.addComponent(lblBitteLagerAuswhlen)))))
-									.addComponent(scrollPane_1, Alignment.TRAILING))
+														.addGroup(groupLayout.createSequentialGroup().addGap(38)
+																.addGroup(groupLayout
+																		.createParallelGroup(Alignment.LEADING, false)
+																		.addComponent(lblVerleihdatum)
+																		.addComponent(textFieldVerleihdatum)
+																		.addComponent(lblPreis)
+																		.addComponent(lblLieferant)
+																		.addComponent(textFieldPreis)
+																		.addComponent(textFieldModellNr)
+																		.addComponent(comboBoxLieferant,
+																				GroupLayout.PREFERRED_SIZE, 144,
+																				GroupLayout.PREFERRED_SIZE)
+																		.addComponent(lblModellnummer)))
+														.addGroup(groupLayout.createSequentialGroup()
+																.addPreferredGap(ComponentPlacement.UNRELATED)
+																.addGroup(groupLayout
+																		.createParallelGroup(Alignment.LEADING)
+																		.addComponent(lblAktionAuswhlen)
+																		.addComponent(lblBitteLagerAuswhlen)))))
+										.addComponent(scrollPaneBeschreibung, Alignment.TRAILING))
 								.addComponent(lblAktion))
-							.addGap(12)))
-					.addGap(25)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(43)
-					.addComponent(lblNewLabel)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane, Alignment.LEADING)
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(comboBoxLager, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblBitteLagerAuswhlen))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(lblAktion)
-							.addGap(7)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(comboBoxAktionen, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblAktionAuswhlen))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(separator, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblInventarnummer)
-								.addComponent(lblModellnummer))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textFieldInventarnummer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textFieldModellNr, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblProdukttyp)
-								.addComponent(lblLieferant))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(comboBoxLieferant, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(comboBoxProdTyp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblHersteller)
-								.addComponent(lblPreis))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textFieldPreis, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(comboBoxHersteller, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblEinlagerungsdatum)
-								.addComponent(lblVerleihdatum))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textFieldEinlagerungsdatum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textFieldVerleihdatum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblBeschreibung)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnEingabenVerwerfen)
-								.addComponent(btnAusfhren))))
-					.addGap(1))
-		);
-		
-
+						.addGap(37).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addGap(43).addComponent(lblNewLabel)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(comboBoxLager, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblBitteLagerAuswhlen))
+								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblAktion).addGap(7)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(comboBoxAktionen, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblAktionAuswhlen))
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(separator, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblInventarnummer).addComponent(lblModellnummer))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(textFieldInventarnummer, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(textFieldModellNr, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblProdukttyp).addComponent(lblLieferant))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(comboBoxLieferant, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(comboBoxProdTyp, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblHersteller).addComponent(lblPreis))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(textFieldPreis, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(comboBoxHersteller, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblEinlagerungsdatum).addComponent(lblVerleihdatum))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(textFieldEinlagerungsdatum, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(textFieldVerleihdatum, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblBeschreibung)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(scrollPaneBeschreibung, GroupLayout.PREFERRED_SIZE, 56,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(18).addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(btnEingabenVerwerfen).addComponent(btnAusfhren))))
+				.addGap(1)));
 
 		table = new JTable();
 		scrollPane.setViewportView(table);
@@ -358,10 +380,10 @@ public class FrameWindow {
 	}
 
 	/**
-	 * Diese Methode setzt alle Felder auf sichtbar und editierbar.
+	 * Diese Methode setzt alle Felder auf sichtbar.
 	 */
-	public void setAllVisibleAndEnabledTrue() {
-		// Sichtbarkeit
+	public void setAllVisibleTrue() {
+		// Sichtbarkeit der Textfelder, Auswahlfelder.
 		textFieldInventarnummer.setVisible(true);
 		textFieldModellNr.setVisible(true);
 		comboBoxProdTyp.setVisible(true);
@@ -370,25 +392,26 @@ public class FrameWindow {
 		textFieldPreis.setVisible(true);
 		textFieldEinlagerungsdatum.setVisible(true);
 		textFieldVerleihdatum.setVisible(true);
+		scrollPaneBeschreibung.setVisible(true);
 		textFieldBeschreibung.setVisible(true);
 
-		// Editierbarkeit
-		textFieldInventarnummer.setEnabled(true);
-		textFieldModellNr.setEnabled(true);
-		comboBoxProdTyp.setEnabled(true);
-		comboBoxLieferant.setEnabled(true);
-		comboBoxHersteller.setEnabled(true);
-		textFieldPreis.setEnabled(true);
-		textFieldEinlagerungsdatum.setEnabled(true);
-		textFieldVerleihdatum.setEnabled(true);
-		textFieldBeschreibung.setEnabled(true);
+		// Sichtbarkeit der Labels
+		lblInventarnummer.setVisible(true);
+		lblModellnummer.setVisible(true);
+		lblProdukttyp.setVisible(true);
+		lblLieferant.setVisible(true);
+		lblHersteller.setVisible(true);
+		lblPreis.setVisible(true);
+		lblEinlagerungsdatum.setVisible(true);
+		lblVerleihdatum.setVisible(true);
+		lblBeschreibung.setVisible(true);
 	}
 
 	/**
-	 * Diese Methode setzt alle Felder auf nicht sichtbar und nicht editierbar.
+	 * Diese Methode setzt alle Felder auf nicht sichtbar.
 	 */
-	public void setAllVisibleAndEnabledFalse() {
-		// Sichtbarkeit
+	public void setAllVisibleFalse() {
+		// Sichtbarkeit der Textfelder, Auswahlfelder.
 		textFieldInventarnummer.setVisible(false);
 		textFieldModellNr.setVisible(false);
 		comboBoxProdTyp.setVisible(false);
@@ -397,21 +420,21 @@ public class FrameWindow {
 		textFieldPreis.setVisible(false);
 		textFieldEinlagerungsdatum.setVisible(false);
 		textFieldVerleihdatum.setVisible(false);
+		scrollPaneBeschreibung.setVisible(false);
 		textFieldBeschreibung.setVisible(false);
 
-		// Editierbarkeit
-		textFieldInventarnummer.setEnabled(false);
-		textFieldModellNr.setEnabled(false);
-		comboBoxProdTyp.setEnabled(false);
-		comboBoxLieferant.setEnabled(false);
-		comboBoxHersteller.setEnabled(false);
-		textFieldPreis.setEnabled(false);
-		textFieldEinlagerungsdatum.setEnabled(false);
-		textFieldVerleihdatum.setEnabled(false);
-		textFieldBeschreibung.setEnabled(false);
-
+		// Sichtbarkeit der Labels
+		lblInventarnummer.setVisible(false);
+		lblModellnummer.setVisible(false);
+		lblProdukttyp.setVisible(false);
+		lblLieferant.setVisible(false);
+		lblHersteller.setVisible(false);
+		lblPreis.setVisible(false);
+		lblEinlagerungsdatum.setVisible(false);
+		lblVerleihdatum.setVisible(false);
+		lblBeschreibung.setVisible(false);
 	}
-	
+
 	/**
 	 * Diese Methode setzt alle Eingabefelder auf null.
 	 */
