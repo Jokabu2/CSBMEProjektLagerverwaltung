@@ -304,6 +304,8 @@ public class FrameWindow {
 
 					case "Ändern":
 						lblAktionAuswhlen.setVisible(false);
+						String eingabeInventarnummer = JOptionPane.showInputDialog(null, "Die Inventarnummer des zu bearbeitenden Datensatzes angeben:", "Aktion: Ändern", 1);
+						textFieldInventarnummer.setText(eingabeInventarnummer);
 						action = 3;
 						break;
 

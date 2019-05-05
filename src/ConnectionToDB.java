@@ -166,7 +166,7 @@ public class ConnectionToDB {
 	// Methode leere Strings ein.
 
 	public void update(String tabellenname, String inventarnummer, String produkttyp, String hersteller,
-			String modellnummer, String beschreibung, int preis, String lieferant, String einlagerungsdatum,
+			String modellnummer, String beschreibung, String preis, String lieferant, String einlagerungsdatum,
 			String auslagerungsdatum) {
 		try {
 			connectToMysql(host, database, user, passwd);
