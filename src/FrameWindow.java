@@ -7,6 +7,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -38,9 +39,18 @@ import javax.swing.JTextArea;
 
 public class FrameWindow {
 
+	// Datenbankobjekt
+	ConnectionToDB db = new ConnectionToDB();
+
 	JFrame frame;
 
 	private JTable table;
+
+	// Auswahlfelder und Labels - oben (Verwaltung)
+	private JComboBox comboBoxLager;
+	private JLabel lblBitteLagerAuswhlen;
+	private JComboBox comboBoxAktionen;
+	private JLabel lblAktionAuswhlen;
 
 	// Textfelder/Auswahlfelder der Eingabefelder
 	private JTextField textFieldInventarnummer;
@@ -51,6 +61,7 @@ public class FrameWindow {
 	private JTextField textFieldPreis;
 	private JTextField textFieldEinlagerungsdatum;
 	private JTextField textFieldVerleihdatum;
+	private JScrollPane scrollPaneBeschreibung;
 	private JTextArea textFieldBeschreibung;
 
 	// Labels der Eingabefelder
@@ -64,13 +75,17 @@ public class FrameWindow {
 	private JLabel lblVerleihdatum;
 	private JLabel lblBeschreibung;
 
-	private JScrollPane scrollPaneBeschreibung;
+	private int action;
+	private String tabellenname;
 
 	/**
 	 * Applikation wird erzeugt.
 	 */
-	public FrameWindow() {
+
+	public FrameWindow(ConnectionToDB db) {
+		this.db = db;
 		initialize();
+
 	}
 
 	/**
@@ -95,17 +110,19 @@ public class FrameWindow {
 		JLabel lblNewLabel = new JLabel("Lager\u00FCbersicht");
 		lblNewLabel.setForeground(Color.BLACK);
 
-		JLabel lblBitteLagerAuswhlen = new JLabel("Kein Lager ausgew\u00E4hlt");
+		lblBitteLagerAuswhlen = new JLabel("Kein Lager ausgew\u00E4hlt");
 		lblBitteLagerAuswhlen.setFont(new Font("SansSerif", Font.ITALIC, 12));
 		lblBitteLagerAuswhlen.setForeground(Color.RED);
 
 		JLabel lblAktion = new JLabel("Aktion");
 		lblAktion.setForeground(Color.BLACK);
 
-		JLabel lblAktionAuswhlen = new JLabel("Keine Aktion ausgew\u00E4hlt");
+		lblAktionAuswhlen = new JLabel("Keine Aktion ausgew\u00E4hlt");
 		lblAktionAuswhlen.setFont(new Font("SansSerif", Font.ITALIC, 12));
 		lblAktionAuswhlen.setForeground(Color.RED);
 
+		JSeparator separator = new JSeparator();
+		
 		textFieldInventarnummer = new JTextField();
 		textFieldInventarnummer.setToolTipText("");
 		textFieldInventarnummer.setColumns(10);
@@ -161,6 +178,15 @@ public class FrameWindow {
 		comboBoxHersteller = new JComboBox();
 		comboBoxHersteller.setModel(new DefaultComboBoxModel(new String[] { "HP", "Dell", "Apple", "Asus" }));
 		comboBoxHersteller.setSelectedIndex(-1);
+		
+		scrollPaneBeschreibung = new JScrollPane();
+		textFieldBeschreibung = new JTextArea();
+		scrollPaneBeschreibung.setViewportView(textFieldBeschreibung);
+
+		JScrollPane scrollPane = new JScrollPane();
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
 
 		JButton btnEingabenVerwerfen = new JButton("Eingaben verwerfen");
 		btnEingabenVerwerfen.addActionListener(new ActionListener() {
@@ -171,28 +197,41 @@ public class FrameWindow {
 
 		btnEingabenVerwerfen.setAutoscrolls(true);
 
+		// AUSFÜHREN BUTTON
 		JButton btnAusfhren = new JButton("Ausf\u00FChren");
 		btnAusfhren.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) { // Wen der Button "Ausführen" gedrückt wird, werden folgende
 															// Anweisungen ausgeführt.
-				textFieldEinlagerungsdatum.getText();
-				deleteEingaben();
-				System.out.println("Button: Ausführen");
+
+				switch (action) {
+				case 1: // Hinzufügen
+					String ptyp = (String) comboBoxProdTyp.getItemAt(comboBoxProdTyp.getSelectedIndex()); // Produkttyp
+					String lief = (String) comboBoxLieferant.getItemAt(comboBoxProdTyp.getSelectedIndex()); // Lieferant
+					String her = (String) comboBoxHersteller.getItemAt(comboBoxProdTyp.getSelectedIndex()); // Hersteller
+
+					db.insert(tabellenname, textFieldInventarnummer.getText(), ptyp, her, textFieldModellNr.getText(),
+							textFieldBeschreibung.getText(), textFieldPreis.getText(), lief, Datum.getCurrentDate(),
+							Datum.getDefaultDate());
+					break;
+				case 2: // Suchen
+					
+					break;
+				case 3: // Ändern
+					
+					break;
+				case 4: // Verleihen
+					
+					break;
+				case 5: // Löschen
+					db.delete(tabellenname, textFieldInventarnummer.getText());
+				}
+				
 			}
 		});
 
-		scrollPaneBeschreibung = new JScrollPane();
-		textFieldBeschreibung = new JTextArea();
-		scrollPaneBeschreibung.setViewportView(textFieldBeschreibung);
 
-		JScrollPane scrollPane = new JScrollPane();
 
-		JSeparator separator = new JSeparator();
-
-		JComboBox comboBoxLager = new JComboBox();
-		comboBoxLager.setName("");
-		comboBoxLager.setMaximumRowCount(10);
-		comboBoxLager.setToolTipText("");
+		comboBoxLager = new JComboBox();
 		comboBoxLager.setModel(new DefaultComboBoxModel(new String[] { "Lager 1 - Marketing", "Lager 2 - EDV",
 				"Lager 3 - Fotostudio", "Lager 4 - Messe", "Lager 5 - Produktion", "Lager 6 - K\u00FCche" }));
 		comboBoxLager.setSelectedIndex(-1);
@@ -202,23 +241,41 @@ public class FrameWindow {
 					JComboBox cb = (JComboBox) ae.getSource();
 					String msg = (String) cb.getSelectedItem();
 					switch (msg) {
-					case "Lager 1":
+					case "Lager 1 - Marketing":
 						lblBitteLagerAuswhlen.setVisible(false);
+						tabellenname = "marketing";
 						break;
-					case "Lager 2":
+					case "Lager 2 - EDV":
 						lblBitteLagerAuswhlen.setVisible(false);
+						tabellenname = "edv";
 						break;
-					case "Lager 3":
+					case "Lager 3 - Fotostudio":
 						lblBitteLagerAuswhlen.setVisible(false);
+						tabellenname = "fotostudio";
+						break;
+					case "Lager 4 - Messe":
+						lblBitteLagerAuswhlen.setVisible(false);
+						tabellenname = "messe";
+						break;
+					case "Lager 5 - Produktion":
+						lblBitteLagerAuswhlen.setVisible(false);
+						tabellenname = "produktion";
+						break;
+					case "Lager 6 - K\u00FCche":
+						lblBitteLagerAuswhlen.setVisible(false);
+						tabellenname = "kueche";
 						break;
 					default:
-
+						lblBitteLagerAuswhlen.setVisible(true);
 					}
 				}
+				
+				//Tabelle anzeigen
+				
 			}
 		});
 
-		JComboBox comboBoxAktionen = new JComboBox();
+		comboBoxAktionen = new JComboBox();
 		comboBoxAktionen.setModel(new DefaultComboBoxModel(
 				new String[] { "Hinzuf\u00FCgen", "Suchen", "\u00C4ndern", "Verleihen", "L\u00F6schen" }));
 		comboBoxAktionen.setSelectedIndex(-1);
@@ -237,23 +294,36 @@ public class FrameWindow {
 						textFieldEinlagerungsdatum.setVisible(false);
 						lblVerleihdatum.setVisible(false);
 						textFieldVerleihdatum.setVisible(false);
+						action = 1;
 						break;
+
 					case "Suchen":
 						lblAktionAuswhlen.setVisible(false);
+						action = 2;
 						break;
+
 					case "Ändern":
 						lblAktionAuswhlen.setVisible(false);
+						action = 3;
 						break;
+
 					case "Verleihen":
 						setAllVisibleFalse();
+						lblAktionAuswhlen.setVisible(false);
 						lblInventarnummer.setVisible(true);
 						textFieldInventarnummer.setVisible(true);
+						action = 4;
 						break;
+
 					case "Löschen":
 						setAllVisibleFalse();
+						lblAktionAuswhlen.setVisible(false);
 						lblInventarnummer.setVisible(true);
 						textFieldInventarnummer.setVisible(true);
+						action = 5;
 						break;
+					default:
+						textFieldInventarnummer.setVisible(true);
 					}
 				}
 			}
@@ -373,9 +443,6 @@ public class FrameWindow {
 										.addComponent(btnEingabenVerwerfen).addComponent(btnAusfhren))))
 				.addGap(1)));
 
-		table = new JTable();
-		scrollPane.setViewportView(table);
-
 		frame.getContentPane().setLayout(groupLayout);
 	}
 
@@ -450,5 +517,4 @@ public class FrameWindow {
 		textFieldVerleihdatum.setText(null);
 		textFieldBeschreibung.setText(null);
 	}
-
 }

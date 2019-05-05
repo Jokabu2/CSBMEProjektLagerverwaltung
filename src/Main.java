@@ -3,10 +3,14 @@ import java.awt.EventQueue;
 public class Main {
 
 	public static void main(String[] args) {
+		//DB-Connection
+		ConnectionToDB db = new ConnectionToDB();
+		
+		//Frame initialisieren
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FrameWindow window = new FrameWindow();
+					FrameWindow window = new FrameWindow(db);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -15,10 +19,8 @@ public class Main {
 		});
 	
 		
-		/*ConnectionToDB db = new ConnectionToDB();
-		db.connectToMysql("localhost:3306", "lagerverwaltung", "root", "Kunxholli123");
-		System.out.println("Fertig");
-		*/
+
+		
 	}
 
 }
